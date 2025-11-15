@@ -127,32 +127,41 @@ data = [
     "message": "Request GET /api/v1/health processed in 5ms."
   }
 ]
-@mcp.resource(uri="data:///logs",name="Logs")
-def allLogs():
-   return data
+
+tickets =[
+  {
+    "id": 1,
+    "status": "en_progreso",
+    "fecha_creacion": "2025-11-10T11:30:00",
+    "contenido": "Advertencia de DB_Pool: El pool de conexiones 'main-pool' alcanzó el 90% de capacidad. Se está revisando la optimización de consultas."
+  },
+  {
+    "id": 2,
+    "status": "pendiente",
+    "fecha_creacion": "2025-11-10T14:10:00",
+    "contenido": "Incidente de seguridad: Sospecha de fuerza bruta en la cuenta 'admin' desde la IP 102.5.10.3. La cuenta ha sido bloqueada. Requiere investigación."
+  },
+  {
+    "id": 3,
+    "status": "pendiente",
+    "fecha_creacion": "2025-11-10T14:15:00",
+    "contenido": "Error crítico: El PaymentService no puede conectar con 'stripe-api.internal'. Múltiples fallos de DNS. Pagos caídos."
+  }
+]
 
 
-# @mcp.tool("ObtenerBoludeces")
-# def chi_cheñol(algo:str):
-#     """
-#      Hace cosas re contra locas nomás te digo
-#     """
-#     try:
-#       return {
-#          "status":"succesful",
-#          "data":"holaaaa"
-#       } 
-#     except Exception as e:
-#       return f"Error: {str(e)}"
-    
 
+@mcp.tool("ObtenerTickets")
+def getTickets():
+    """Devuelve los tickets que se encuentran en la base de datos de tickets."""
+    print("Obtener tickets")
+    return tickets
 
 @mcp.tool("ObtenerLogs")
 def obtener_logs(fecha_inicio: Annotated[datetime,"Fecha de Inicio del rango de fechas"],fecha_fin: Annotated[datetime,"Fecha de Fin del rango de fechas"] =  datetime.today().strftime('%Y-%m-%d') ):
     """
      Retorna un array de logs de un rango de fechas determinado, por defecto se busca hasta la fecha actual.
     """
-    # print("llegó hasta acá")
     logsobtenidos = data
 
     return {
@@ -162,17 +171,31 @@ def obtener_logs(fecha_inicio: Annotated[datetime,"Fecha de Inicio del rango de 
 }
 
 @mcp.tool("CrearTicket")
-def crear_ticket(status,contenido ): 
+def crear_ticket(status,contenido: str ): 
     """
-      Crea un ticket a partir de un estado de vulnerabilidad.
-    """
-    return
+      Crea un ticket a partir de un estado de vulnerabilidad y lo guarda en un array Tickets.
+   """
+    
+    print("ESTO SE ACTUALIZÓ")
+    nuevoTicket = {
+    "id": 452,
+    "status": status,
+    "contenido": contenido
+  }
+
+    tickets.append(nuevoTicket)
+    print("SE CREÓ UN NUEVO TICKET:", tickets)
+    return tickets
 
 @mcp.tool("EnviarAlertaporEmail")
-def enviar_alerta_por_email(asunto,contenido):
+def enviar_alerta_por_email(asunto: Annotated[str,"El asunto que va a contener el email, generalmente será el contenido del ticket"],contenido: Annotated[str,"El contenido será el ticket"]):
     """
       Envia una alerta por email de un ticket.
     """
+
+
+    print("Se envió un email al usuario. ")
+
     return
 
 

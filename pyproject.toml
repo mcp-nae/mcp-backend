@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi[standard]>=0.121.2",
+    "langchain>=1.0.7",
+    "langchain-google-genai>=3.0.3",
     "langchain-mcp-adapters>=0.1.12",
     "mcp[cli]>=1.20.0",
 ]

@@ -21,7 +21,8 @@ client = MultiServerMCPClient(
             "command": "python",
             # Absolute path to your math_server.py file
             "args": ["./MCPServers/logs-server.py"],
-        },}
+        }
+        },
 )
 
 messages = []
@@ -51,7 +52,14 @@ Recuerda: SIEMPRE procesa y resume la información, NUNCA muestres el JSON raw."
     last_content = None
     formatted_response = []
     for chunk in response:
-        current_content = chunk[0].content
+        current_content = "" 
+        print(f"TODO ACÁ [{chunk}]")
+        if chunk[0].content: 
+            current_content = chunk[0].content
+        if chunk[0].text: 
+            current_content = chunk[0].text
+        # print("la gran puta",current_content[])
+        
         # convertie el contenido a string si es una lista
         if isinstance(current_content, list):
             current_content = current_content[0] if current_content else ""
@@ -64,7 +72,7 @@ Recuerda: SIEMPRE procesa y resume la información, NUNCA muestres el JSON raw."
                     print(current_content)
                     formatted_response.append(current_content)
             last_content = current_content
-    
+    # print("acá la respuesta gua'u",formatted_response)
     # agregar la respuesta formateada al historial de mensajes
     if formatted_response:
         final_content = "".join(formatted_response)
@@ -82,7 +90,3 @@ async def promptLLM(message: str):
     response = await invoke_agent()
     return response
 
-if __name__ == "__main__":
-    asyncio.run(promptLLM())
-    asyncio.run(promptLLM())
-    asyncio.run(promptLLM())
