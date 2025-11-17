@@ -1,15 +1,20 @@
 import os
+from dotenv import load_dotenv 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain.agents import create_agent
-from model import llm
 from langchain.messages import HumanMessage,AIMessage
 import asyncio
 
-api_key = os.getenv("API_KEY")
 
+
+load_dotenv()
+api_key = os.getenv("API_KEY")
+api_key = os.getenv("RESEND_KEY")
+
+print("Hola", api_key)
 model = ChatGoogleGenerativeAI(
-api_key=api_key,
+api_key="AIzaSyCmWPLhAuySC9iebpx6QM6iVR9rLzjAgMw",
 model="gemini-2.5-flash",
 temperature=0.5,
 max_tokens=2048)
@@ -58,7 +63,7 @@ Recuerda: SIEMPRE procesa y resume la información, NUNCA muestres el JSON raw."
             current_content = chunk[0].content
         if chunk[0].text: 
             current_content = chunk[0].text
-        # print("la gran puta",current_content[])
+        print("la gran puta",current_content)
         
         # convertie el contenido a string si es una lista
         if isinstance(current_content, list):

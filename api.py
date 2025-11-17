@@ -10,10 +10,7 @@ app = FastAPI()
 # --- Configuración CORS ---
 # Lista de orígenes permitidos. Reemplaza con el dominio de tu Front-end.
 origins = [
-    "http://localhost",
-    "http://localhost:3000", # Ejemplo común para React/Vue/Angular
-    "http://127.0.0.1:8000", # Un puerto diferente si lo necesitas
-    # Añade aquí tu dominio de producción, ej: "https://tudominio.com"
+    "http://localhost:5173",
 ]
 
 # 2. Agregar el Middleware

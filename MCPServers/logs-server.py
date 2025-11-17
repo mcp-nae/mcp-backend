@@ -1,8 +1,15 @@
 from datetime import datetime
 # import json
 # import pickle
+import os
+from dotenv import load_dotenv
 from typing import Annotated
-from mcp.server.fastmcp import FastMCP
+import resend
+from fastmcp import FastMCP
+
+RESENDKEY = os.getenv("RESEND_KEY")
+
+
 mcp = FastMCP("Demo")
 
 data = [
@@ -188,15 +195,27 @@ def crear_ticket(status,contenido: str ):
     return tickets
 
 @mcp.tool("EnviarAlertaporEmail")
-def enviar_alerta_por_email(asunto: Annotated[str,"El asunto que va a contener el email, generalmente será el contenido del ticket"],contenido: Annotated[str,"El contenido será el ticket"]):
+async def enviar_alerta_por_email(asunto: Annotated[str,"El asunto que va a contener el email, generalmente será el contenido del ticket"],contenido: Annotated[str,"El contenido será el ticket"]):
     """
       Envia una alerta por email de un ticket.
     """
+    load_dotenv()
+    resend.api_key = os.getenv("RESEND_KEY")
 
 
+    params: resend.Emails.SendParams = {
+        "from": "MCPdeIT <onboarding@resend.dev>",
+        "to": ["ezequielafeita@gmail.com"],
+        "subject": asunto,
+        "html": f"<strong>{contenido}</strong>",
+    }
+    email = resend.Emails.send(params)
     print("Se envió un email al usuario. ")
 
-    return
+    return {
+      "status":"true",
+      "message":"Se envió el mensaje correctamente."
+    }
 
 
 if __name__ == "__main__":
